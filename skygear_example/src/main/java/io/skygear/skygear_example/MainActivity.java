@@ -221,6 +221,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, LambdaActivity.class));
     }
 
+    public void goDanger(View view) {
+        startActivity(new Intent(this, DangerZoneActivity.class));
+    }
+
     public void goServerConfiguration(View view) {
         startActivity(new Intent(this, ServerConfigurationActivity.class));
     }
