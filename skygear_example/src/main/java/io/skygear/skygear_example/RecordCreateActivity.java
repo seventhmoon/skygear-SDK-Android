@@ -46,6 +46,7 @@ import io.skygear.skygear.Error;
 import io.skygear.skygear.Record;
 import io.skygear.skygear.RecordDeleteResponseHandler;
 import io.skygear.skygear.RecordSaveResponseHandler;
+import io.skygear.skygear_example.util.PermissionUtils;
 
 public class RecordCreateActivity
         extends AppCompatActivity
@@ -56,6 +57,7 @@ public class RecordCreateActivity
     private static final String TAG = RecordCreateActivity.class.getSimpleName();
     private static final int PICK_IMAGE_REQ = 12345;
     private static final int LOCATION_PERMISSION_REQ_CODE = 12346;
+    private static final int GALLERY_PERMISSIONS_REQUEST = 0;
 
     private EditText[] recordKeyFields;
     private EditText[] recordValueFields;
@@ -167,6 +169,12 @@ public class RecordCreateActivity
                     Toast.makeText(this, "Fail to get location permission", Toast.LENGTH_LONG).show();
                 }
                 break;
+
+            case GALLERY_PERMISSIONS_REQUEST:
+                if (PermissionUtils.permissionGranted(requestCode, GALLERY_PERMISSIONS_REQUEST, grantResults)) {
+                    startGalleryChooser();
+                }
+                break;
         }
     }
 
@@ -217,7 +225,7 @@ public class RecordCreateActivity
             this.recordAssetButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    RecordCreateActivity.this.doPickImage(v);
+                    RecordCreateActivity.this.startGalleryChooser();
                 }
             });
 
@@ -237,6 +245,16 @@ public class RecordCreateActivity
                 RecordCreateActivity.this.doRemoveImage(v);
             }
         });
+    }
+
+    public void startGalleryChooser() {
+        if (PermissionUtils.requestPermission(this, GALLERY_PERMISSIONS_REQUEST, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select a photo"),
+                    PICK_IMAGE_REQ);
+        }
     }
 
     private void dismissKeyboard() {
@@ -369,11 +387,6 @@ public class RecordCreateActivity
         this.updateAssetViews();
     }
 
-    public void doPickImage(View view) {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, PICK_IMAGE_REQ);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
