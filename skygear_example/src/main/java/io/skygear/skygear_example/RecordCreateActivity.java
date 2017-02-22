@@ -142,18 +142,6 @@ public class RecordCreateActivity
     @Override
     public void onConnected(Bundle bundle) {
         Log.i(TAG, "onConnected: Google API Client Connected");
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                != PackageManager.PERMISSION_GRANTED) {
-//
-//            ActivityCompat.requestPermissions(
-//                    this,
-//                    new String[]{ Manifest.permission.ACCESS_FINE_LOCATION },
-//                    LOCATION_PERMISSION_REQ_CODE
-//            );
-//        } else {
-//            Log.i(TAG, "checkSelfPermission: Okay to get the location");
-//            this.getCurrentGeoLocation();
-//        }
     }
 
     @Override
@@ -191,14 +179,6 @@ public class RecordCreateActivity
                     Toast.makeText(this, "Fail to get location permission", Toast.LENGTH_LONG).show();
                 }
 
-//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    Log.i(TAG, "onRequestPermissionsResult: Got the location permission");
-//                    this.getCurrentGeoLocation();
-//                } else {
-//                    this.recordLocationSwitch.setChecked(false);
-//                    Log.i(TAG, "onRequestPermissionsResult: Fail to get location permission");
-//                    Toast.makeText(this, "Fail to get location permission", Toast.LENGTH_LONG).show();
-//                }
                 break;
 
             case GALLERY_PERMISSIONS_REQUEST:
