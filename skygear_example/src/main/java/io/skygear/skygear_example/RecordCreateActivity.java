@@ -49,15 +49,17 @@ import io.skygear.skygear.RecordDeleteResponseHandler;
 import io.skygear.skygear.RecordSaveResponseHandler;
 import io.skygear.skygear_example.util.PermissionUtils;
 
+
 public class RecordCreateActivity
         extends AppCompatActivity
         implements
-            GoogleApiClient.ConnectionCallbacks,
-            GoogleApiClient.OnConnectionFailedListener
-{
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = RecordCreateActivity.class.getSimpleName();
     private static final int PICK_IMAGE_REQ = 12345;
     private static final int LOCATION_PERMISSION_REQ_CODE = 12346;
+    private static final int GALLERY_PERMISSIONS_REQUEST = 0;
+
     private static final int GALLERY_PERMISSIONS_REQUEST = 0;
 
     private EditText[] recordKeyFields;
@@ -87,12 +89,12 @@ public class RecordCreateActivity
 
         this.skygear = Container.defaultContainer(this);
 
-        this.recordKeyFields = new EditText[] {
+        this.recordKeyFields = new EditText[]{
                 (EditText) findViewById(R.id.record_key1),
                 (EditText) findViewById(R.id.record_key2)
         };
 
-        this.recordValueFields = new EditText[] {
+        this.recordValueFields = new EditText[]{
                 (EditText) findViewById(R.id.record_value1),
                 (EditText) findViewById(R.id.record_value2)
         };
@@ -186,6 +188,13 @@ public class RecordCreateActivity
                     startGalleryChooser();
                 }
                 break;
+
+            case GALLERY_PERMISSIONS_REQUEST:
+                if (PermissionUtils.permissionGranted(requestCode, GALLERY_PERMISSIONS_REQUEST, grantResults)) {
+                    startGalleryChooser();
+                }
+                break;
+
         }
     }
 
@@ -311,7 +320,7 @@ public class RecordCreateActivity
                 .setMessage("")
                 .create();
 
-        skygear.getPublicDatabase().save(newRecord, new RecordSaveResponseHandler(){
+        skygear.getPublicDatabase().save(newRecord, new RecordSaveResponseHandler() {
             @Override
             public void onSaveSuccess(Record[] records) {
                 RecordCreateActivity.this.record = records[0];
@@ -394,11 +403,21 @@ public class RecordCreateActivity
         });
     }
 
+    public void startGalleryChooser() {
+        if (PermissionUtils.requestPermission(this, GALLERY_PERMISSIONS_REQUEST, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select a photo"),
+                    PICK_IMAGE_REQ);
+        }
+    }
+
+
     public void doRemoveImage(View view) {
         this.recordAsset = null;
         this.updateAssetViews();
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
