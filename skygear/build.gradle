@@ -26,7 +26,7 @@ android {
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 2
+        targetSdkVersion 25
         versionCode 1
         versionName skygearFullVersion
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -48,9 +48,9 @@ android {
 }
 
 dependencies {
+    compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.google.android.gms:play-services-base:10.2.0'
     compile 'com.google.android.gms:play-services-gcm:10.2.0'
-
     compile 'dev.dworks.libs:volleyplus:0.1.4'
     compile 'joda-time:joda-time:2.9.4'
     compile 'org.java-websocket:Java-WebSocket:1.3.0'
@@ -59,9 +59,10 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
 
-    androidTestCompile 'com.android.support:support-annotations:25.2.0'
+    androidTestCompile 'com.android.support:support-annotations:25.1.1'
     androidTestCompile 'com.android.support.test:runner:0.5'
     androidTestCompile 'com.android.support.test:rules:0.5'
+
 }
 
 task generateSourcesJar(type: Jar) {

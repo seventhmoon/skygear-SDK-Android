@@ -1,6 +1,7 @@
 package io.skygear.skygear_example;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,7 +51,7 @@ public class PubsubActivity extends AppCompatActivity {
         }
     }
 
-    private void addMessageToDisplay(String message) {
+    private void addMessageToDisplay(@NonNull String message) {
         String text = this.display.getText().toString();
         text += message + "\n\n";
 

@@ -1,5 +1,7 @@
 package io.skygear.skygear;
 
+import android.support.annotation.NonNull;
+
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 
@@ -14,7 +16,7 @@ public class LoginRequest extends Request {
      * @param email    the email
      * @param password the password
      */
-    public LoginRequest(String username, String email, String password) {
+    public LoginRequest(String username, String email, @NonNull String password) {
         super("auth:login");
 
         this.data = new HashMap<>();
