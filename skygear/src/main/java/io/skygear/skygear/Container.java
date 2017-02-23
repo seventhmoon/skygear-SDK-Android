@@ -1,6 +1,7 @@
 package io.skygear.skygear;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.security.InvalidParameterException;
@@ -26,7 +27,7 @@ public final class Container implements AuthResolver {
      * @param context application context
      * @param config  configuration of the container
      */
-    public Container(Context context, Configuration config) {
+    public Container(@NonNull Context context, Configuration config) {
         this.context = context.getApplicationContext();
         this.config = config;
         this.requestManager = new RequestManager(context, config);
@@ -51,7 +52,7 @@ public final class Container implements AuthResolver {
      * @param context application context
      * @return a default container
      */
-    public static Container defaultContainer(Context context) {
+    public static Container defaultContainer(@NonNull Context context) {
         if (sharedInstance == null) {
             sharedInstance = new Container(context, Configuration.defaultConfiguration());
         }
@@ -273,7 +274,7 @@ public final class Container implements AuthResolver {
      *
      * @param handler the handler
      */
-    public void whoami(AuthResponseHandler handler) {
+    public void whoami(@NonNull AuthResponseHandler handler) {
         Request req = new GetCurrentUserRequest();
         req.responseHandler = new AuthResponseHandlerWrapper(this, handler);
 
