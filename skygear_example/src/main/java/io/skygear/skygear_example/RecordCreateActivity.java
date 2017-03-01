@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 
@@ -295,6 +296,8 @@ public class RecordCreateActivity
             public void onSaveSuccess(Record[] records) {
                 RecordCreateActivity.this.record = records[0];
                 RecordCreateActivity.this.updateRecordDisplay();
+
+                Log.d(TAG, new Gson().toJson(record));
 
                 successDialog.show();
             }
