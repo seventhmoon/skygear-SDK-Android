@@ -7,10 +7,10 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <permission
         android:name="io.skygear.skygear_example.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="io.skygear.skygear_example.permission.C2D_MESSAGE" />
 
     <application
@@ -61,9 +61,11 @@
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="io.skygear.skygear_example" />
             </intent-filter>
         </receiver>
+
         <service
             android:name="io.skygear.skygear.gcm.ListenerService"
             android:exported="false">
@@ -80,9 +82,9 @@
         </service>
         <service
             android:name="io.skygear.skygear.gcm.RegistrationIntentService"
-            android:exported="false">
-        </service>
+            android:exported="false"></service>
 
+        <activity android:name=".DangerZoneActivity"></activity>
     </application>
 
 </manifest>
