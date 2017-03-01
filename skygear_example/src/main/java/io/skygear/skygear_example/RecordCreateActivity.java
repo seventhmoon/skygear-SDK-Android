@@ -61,8 +61,6 @@ public class RecordCreateActivity
     private static final int LOCATION_PERMISSION_REQ_CODE = 12346;
     private static final int GALLERY_PERMISSIONS_REQUEST = 0;
 
-    private static final int GALLERY_PERMISSIONS_REQUEST = 0;
-
     private EditText[] recordKeyFields;
     private EditText[] recordValueFields;
 
@@ -182,12 +180,6 @@ public class RecordCreateActivity
                     Toast.makeText(this, "Fail to get location permission", Toast.LENGTH_LONG).show();
                 }
 
-                break;
-
-            case GALLERY_PERMISSIONS_REQUEST:
-                if (PermissionUtils.permissionGranted(requestCode, GALLERY_PERMISSIONS_REQUEST, grantResults)) {
-                    startGalleryChooser();
-                }
                 break;
 
             case GALLERY_PERMISSIONS_REQUEST:
@@ -404,16 +396,6 @@ public class RecordCreateActivity
                 failDialog.show();
             }
         });
-    }
-
-    public void startGalleryChooser() {
-        if (PermissionUtils.requestPermission(this, GALLERY_PERMISSIONS_REQUEST, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            Intent intent = new Intent();
-            intent.setType("image/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select a photo"),
-                    PICK_IMAGE_REQ);
-        }
     }
 
 
