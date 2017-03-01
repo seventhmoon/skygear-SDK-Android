@@ -25,6 +25,9 @@ android {
         versionName "1.0"
 
         multiDexEnabled true
+        jackOptions {
+            enabled true
+        }
     }
     signingConfigs {
         release {
@@ -45,7 +48,10 @@ android {
     lintOptions {
         abortOnError false
     }
-
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -61,4 +67,6 @@ dependencies {
 
     compile project(path: ':skygear')
     testCompile 'junit:junit:4.12'
+//    sourceCompatibility = 1.7
+//    targetCompatibility = 1.7
 }
