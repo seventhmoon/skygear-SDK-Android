@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -46,7 +47,8 @@ import io.skygear.skygear.Error;
 import io.skygear.skygear.Record;
 import io.skygear.skygear.RecordDeleteResponseHandler;
 import io.skygear.skygear.RecordSaveResponseHandler;
-import io.skygear.skygear_example.io.skygear.util.PermissionUtils;
+import io.skygear.skygear_example.util.PermissionUtils;
+
 
 public class RecordCreateActivity
         extends AppCompatActivity
@@ -56,6 +58,7 @@ public class RecordCreateActivity
     private static final String TAG = RecordCreateActivity.class.getSimpleName();
     private static final int PICK_IMAGE_REQ = 12345;
     private static final int LOCATION_PERMISSION_REQ_CODE = 12346;
+    private static final int GALLERY_PERMISSIONS_REQUEST = 0;
 
     private static final int GALLERY_PERMISSIONS_REQUEST = 0;
 
@@ -106,6 +109,19 @@ public class RecordCreateActivity
         this.deleteButton = (Button) findViewById(R.id.delete_button);
         this.display = (TextView) findViewById(R.id.record_display);
 
+
+
+        recordLocationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    updateLocation();
+
+
+                }
+            }
+        });
+
         this.updateRecordDisplay();
         this.updateAssetViews();
 
@@ -118,21 +134,16 @@ public class RecordCreateActivity
         }
     }
 
+    private void updateLocation(){
+        if (PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQ_CODE, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            Log.i(TAG, "checkSelfPermission: Okay to get the location");
+            getCurrentGeoLocation();
+        }
+    }
+
     @Override
     public void onConnected(Bundle bundle) {
         Log.i(TAG, "onConnected: Google API Client Connected");
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    LOCATION_PERMISSION_REQ_CODE
-            );
-        } else {
-            Log.i(TAG, "checkSelfPermission: Okay to get the location");
-            this.getCurrentGeoLocation();
-        }
     }
 
     @Override
@@ -161,12 +172,20 @@ public class RecordCreateActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case LOCATION_PERMISSION_REQ_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (PermissionUtils.permissionGranted(requestCode, LOCATION_PERMISSION_REQ_CODE, grantResults)) {
                     Log.i(TAG, "onRequestPermissionsResult: Got the location permission");
                     this.getCurrentGeoLocation();
-                } else {
+                }else{
+                    this.recordLocationSwitch.setChecked(false);
                     Log.i(TAG, "onRequestPermissionsResult: Fail to get location permission");
                     Toast.makeText(this, "Fail to get location permission", Toast.LENGTH_LONG).show();
+                }
+
+                break;
+
+            case GALLERY_PERMISSIONS_REQUEST:
+                if (PermissionUtils.permissionGranted(requestCode, GALLERY_PERMISSIONS_REQUEST, grantResults)) {
+                    startGalleryChooser();
                 }
                 break;
 
@@ -192,6 +211,7 @@ public class RecordCreateActivity
             this.recordLocationSwitch.setEnabled(true);
             Toast.makeText(this, "Successfully get current location", Toast.LENGTH_LONG).show();
         } else {
+            recordLocationSwitch.setChecked(false);
             Log.i(TAG, "getCurrentGeoLocation: Fail to get current geo location");
             Toast.makeText(this, "Fail to get current geo location", Toast.LENGTH_LONG).show();
         }
@@ -246,6 +266,16 @@ public class RecordCreateActivity
                 RecordCreateActivity.this.doRemoveImage(v);
             }
         });
+    }
+
+    public void startGalleryChooser() {
+        if (PermissionUtils.requestPermission(this, GALLERY_PERMISSIONS_REQUEST, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select a photo"),
+                    PICK_IMAGE_REQ);
+        }
     }
 
     private void dismissKeyboard() {
