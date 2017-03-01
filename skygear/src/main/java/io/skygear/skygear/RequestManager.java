@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import io.skygear.skygear.network.OkHttp3Stack;
+
 /**
  * The Skygear request manager.
  */
@@ -67,7 +69,7 @@ public class RequestManager {
      */
     public RequestManager(Context context, Configuration config) {
         this.context = context;
-        this.queue = Volley.newRequestQueue(context);
+        this.queue = Volley.newRequestQueue(context, new OkHttp3Stack());
         this.requestTimeout = DEFAULT_TIMEOUT;
         this.configure(config);
     }
