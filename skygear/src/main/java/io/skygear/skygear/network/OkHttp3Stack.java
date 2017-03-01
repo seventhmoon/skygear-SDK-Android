@@ -28,8 +28,9 @@ package io.skygear.skygear.network;
  */
 
 import com.android.volley.Request;
-import com.android.volley.error.AuthFailureError;
+import com.android.volley.AuthFailureError;
 import com.android.volley.toolbox.HttpStack;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -146,6 +147,7 @@ public class OkHttp3Stack implements HttpStack {
             throws IOException, AuthFailureError {
 
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
+        clientBuilder.addNetworkInterceptor(new StethoInterceptor());
         int timeoutMs = request.getTimeoutMs();
 
         clientBuilder.connectTimeout(timeoutMs, TimeUnit.MILLISECONDS);
