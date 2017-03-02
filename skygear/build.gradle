@@ -53,7 +53,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-base:10.2.0'
     compile 'com.google.android.gms:play-services-gcm:10.2.0'
     compile 'com.github.seventhmoon:VolleyEx:v0.0.6'
-    //    compile 'dev.dworks.libs:volleyplus:0.1.4'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
