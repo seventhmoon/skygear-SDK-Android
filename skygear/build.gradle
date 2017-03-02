@@ -44,15 +44,15 @@ android {
         abortOnError false
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
 
 dependencies {
     compile 'com.google.android.gms:play-services-base:10.2.0'
     compile 'com.google.android.gms:play-services-gcm:10.2.0'
-    compile 'com.github.seventhmoon:VolleyEx:master-SNAPSHOT'
+    compile 'com.github.seventhmoon:VolleyEx:v0.0.6'
     //    compile 'dev.dworks.libs:volleyplus:0.1.4'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.android.volley:volley:1.0.0'
